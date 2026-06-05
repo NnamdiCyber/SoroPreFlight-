@@ -35,6 +35,7 @@
 - [Environment Support](#-environment-support)
 - [Security Model](#-security-model)
 - [CI/CD Integration](#-cicd-integration)
+- [Project Structure](#-project-structure)
 - [Contributing](#-contributing)
 - [Roadmap](#-roadmap)
 - [License](#-license)
@@ -730,6 +731,125 @@ simulations:
 
 ---
 
+## 🗂 Project Structure
+
+```
+soropreflight/
+│
+├── packages/
+│   ├── cli/                          # @soropreflight/cli — global CLI tool
+│   │   ├── src/
+│   │   │   ├── commands/
+│   │   │   │   ├── simulate.ts       # `soropreflight simulate` command
+│   │   │   │   ├── deploy.ts         # `soropreflight deploy` command
+│   │   │   │   ├── run.ts            # `soropreflight run --suite` command
+│   │   │   │   ├── dashboard.ts      # `soropreflight dashboard` command
+│   │   │   │   ├── workspace.ts      # `soropreflight workspace` commands
+│   │   │   │   └── logs.ts           # `soropreflight logs` command
+│   │   │   ├── output/
+│   │   │   │   ├── reporter.ts       # Terminal output formatter
+│   │   │   │   ├── html-report.ts    # HTML report generator
+│   │   │   │   └── json-report.ts    # JSON report generator
+│   │   │   └── index.ts              # CLI entry point
+│   │   ├── package.json
+│   │   └── tsconfig.json
+│   │
+│   ├── sdk/                          # @soropreflight/sdk — TypeScript SDK
+│   │   ├── src/
+│   │   │   ├── SoroPreFlight.ts      # Main SDK class
+│   │   │   ├── simulate.ts           # Simulation API
+│   │   │   ├── batch.ts              # Batch simulation
+│   │   │   ├── types.ts              # Shared TypeScript types
+│   │   │   └── index.ts              # Public exports
+│   │   ├── package.json
+│   │   └── tsconfig.json
+│   │
+│   ├── core/                         # @soropreflight/core — shared engine
+│   │   ├── src/
+│   │   │   ├── engine/
+│   │   │   │   ├── SimulationEngine.ts    # Soroban RPC simulation wrapper
+│   │   │   │   ├── ForkManager.ts         # Ledger fork/snapshot management
+│   │   │   │   └── ResourceEstimator.ts   # Fee & resource estimation
+│   │   │   ├── checks/
+│   │   │   │   ├── ExecChecks.ts          # Execution checks (budget, memory)
+│   │   │   │   ├── FeeChecks.ts           # Fee & resource checks
+│   │   │   │   ├── AuthChecks.ts          # Authorization checks
+│   │   │   │   ├── StateChecks.ts         # Ledger state checks
+│   │   │   │   └── DeployChecks.ts        # Deployment-specific checks
+│   │   │   ├── ai/
+│   │   │   │   ├── AIAnalysisEngine.ts    # Claude API integration
+│   │   │   │   ├── ErrorExplainer.ts      # Level 1: error translation
+│   │   │   │   ├── OptimizationAdvisor.ts # Level 2: optimization hints
+│   │   │   │   └── ContractAuditor.ts     # Level 3: source audit
+│   │   │   ├── parsers/
+│   │   │   │   ├── XDRParser.ts           # XDR encode/decode helpers
+│   │   │   │   └── DiagnosticsParser.ts   # Soroban diagnostic parser
+│   │   │   └── index.ts
+│   │   └── package.json
+│   │
+│   ├── api/                          # REST API server
+│   │   ├── src/
+│   │   │   ├── routes/
+│   │   │   │   ├── simulate.ts       # POST /simulate
+│   │   │   │   ├── deploy.ts         # POST /deploy/simulate
+│   │   │   │   ├── logs.ts           # GET  /logs
+│   │   │   │   └── workspace.ts      # CRUD /workspace
+│   │   │   ├── middleware/
+│   │   │   │   ├── auth.ts           # JWT / SAML middleware
+│   │   │   │   └── rbac.ts           # Role-based access control
+│   │   │   ├── db/
+│   │   │   │   ├── schema.sql        # PostgreSQL schema
+│   │   │   │   └── migrations/       # Database migrations
+│   │   │   └── server.ts             # Fastify server entry point
+│   │   └── package.json
+│   │
+│   └── dashboard/                    # Web dashboard (React)
+│       ├── src/
+│       │   ├── components/
+│       │   │   ├── SimulationConsole/    # Live simulation UI
+│       │   │   ├── ResultViewer/         # Simulation result display
+│       │   │   ├── ContractExplorer/     # ABI browser
+│       │   │   ├── AIChat/               # AI chat interface
+│       │   │   └── TeamFeed/             # Real-time team activity
+│       │   ├── pages/
+│       │   │   ├── Dashboard.tsx
+│       │   │   ├── History.tsx
+│       │   │   └── Settings.tsx
+│       │   └── main.tsx
+│       └── package.json
+│
+├── preflight/                        # Example simulation suites
+│   ├── ci-suite.yaml                 # CI/CD simulation suite template
+│   └── examples/
+│       ├── token-suite.yaml
+│       └── defi-suite.yaml
+│
+├── docker/
+│   ├── Dockerfile                    # Production image
+│   ├── Dockerfile.dev                # Development image
+│   └── docker-compose.yml            # Full stack compose
+│
+├── helm/                             # Kubernetes Helm chart
+│   └── soropreflight/
+│       ├── Chart.yaml
+│       ├── values.yaml
+│       └── templates/
+│
+├── .github/
+│   └── workflows/
+│       ├── ci.yml                    # Test & lint on PR
+│       ├── release.yml               # Publish npm packages on tag
+│       └── soroban-preflight.yml     # Example consumer workflow
+│
+├── soropreflight.config.json         # Example project config
+├── .env.example                      # Environment variable template
+├── package.json                      # Monorepo root (npm workspaces)
+├── turbo.json                        # Turborepo build pipeline
+└── README.md
+```
+
+---
+
 ## 🤝 Contributing
 
 We welcome contributions from the Stellar developer community!
@@ -767,38 +887,6 @@ npm run dev:api
 # Start dashboard (separate terminal)
 npm run dev:dashboard
 ```
-
----
-
-## 🗺 Roadmap
-
-### v0.1 (Alpha) — Q2 2025
-- [x] Core simulation engine (Soroban RPC wrapper)
-- [x] Basic pre-flight checks (exec, fee, auth)
-- [x] CLI with JSON/HTML reports
-- [x] AI error explanation (Claude integration)
-
-### v0.2 (Beta) — Q3 2025
-- [ ] Web dashboard
-- [ ] TypeScript SDK
-- [ ] GitHub Actions integration
-- [ ] Batch simulation support
-- [ ] Team workspaces (basic)
-
-### v0.3 — Q4 2025
-- [ ] Contract source audit mode
-- [ ] VSCode extension
-- [ ] GitLab CI integration
-- [ ] RBAC and SSO (enterprise)
-- [ ] Audit log export (PDF/JSON)
-
-### v1.0 — Q1 2026
-- [ ] On-premise / air-gapped deployment
-- [ ] Soroban upgrade path simulation
-- [ ] Multi-chain simulation (Stellar + EVM bridge contracts)
-- [ ] SLA-backed enterprise support tier
-
----
 
 ## 📄 License
 
