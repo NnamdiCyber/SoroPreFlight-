@@ -1,0 +1,8 @@
+FROM node:18-alpine
+WORKDIR /app
+RUN npm i -g turbo
+COPY package.json turbo.json tsconfig.base.json ./
+COPY packages/ ./packages/
+RUN npm ci
+EXPOSE 3141
+CMD ["npm", "run", "dev"]

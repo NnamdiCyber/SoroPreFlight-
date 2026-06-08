@@ -1,0 +1,38 @@
+replicaCount: 2
+
+image:
+  repository: soropreflight/api
+  tag: latest
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  port: 3141
+
+ingress:
+  enabled: false
+  host: soropreflight.local
+
+resources:
+  limits:
+    cpu: 500m
+    memory: 512Mi
+  requests:
+    cpu: 250m
+    memory: 256Mi
+
+env:
+  SOROPREFLIGHT_NETWORK: testnet
+  SOROPREFLIGHT_PORT: "3141"
+
+postgresql:
+  enabled: true
+  auth:
+    database: soropreflight
+    username: postgres
+    password: postgres
+
+redis:
+  enabled: true
+  auth:
+    enabled: false

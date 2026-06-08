@@ -1,0 +1,12 @@
+apiVersion: v2
+name: soropreflight
+description: SoroPreFlight — AI-Powered Pre-flight Simulation for Stellar/Soroban
+type: application
+version: 0.1.0
+appVersion: 0.1.0
+keywords:
+  - stellar
+  - soroban
+  - blockchain
+  - simulation
+  - preflight
