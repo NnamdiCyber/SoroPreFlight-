@@ -1,0 +1,21 @@
+[package]
+name = "example-token"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+crate-type = ["cdylib"]
+doctest = false
+
+[dependencies]
+soroban-sdk = { version = "21.0.0", features = ["contract"] }
+
+[profile.release]
+opt-level = "z"
+overflow-checks = true
+debug = 0
+strip = "symbols"
+lto = true
+
+[features]
+testutils = ["soroban-sdk/testutils"]

@@ -1,0 +1,25 @@
+{
+  "name": "@soropreflight/core",
+  "version": "0.1.0",
+  "private": true,
+  "description": "SoroPreFlight shared engine — simulation, checks, AI, parsers",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": ["dist"],
+  "scripts": {
+    "build": "tsc",
+    "test": "vitest run",
+    "lint": "eslint src --ext .ts",
+    "clean": "rm -rf dist .turbo"
+  },
+  "dependencies": {
+    "@stellar/stellar-sdk": "^12.3.0",
+    "@anthropic-ai/sdk": "^0.32.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.7.0",
+    "vitest": "^3.0.0",
+    "eslint": "^9.20.0",
+    "@types/node": "^22.0.0"
+  }
+}

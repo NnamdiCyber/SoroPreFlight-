@@ -1,0 +1,30 @@
+{
+  "name": "@soropreflight/cli",
+  "version": "0.1.0",
+  "private": true,
+  "description": "SoroPreFlight CLI — simulate, deploy, run, dashboard, workspace, logs",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "bin": {
+    "soropreflight": "./dist/index.js"
+  },
+  "files": ["dist"],
+  "scripts": {
+    "build": "tsc",
+    "test": "vitest run",
+    "lint": "eslint src --ext .ts",
+    "clean": "rm -rf dist .turbo"
+  },
+  "dependencies": {
+    "@soropreflight/sdk": "*",
+    "commander": "^13.0.0",
+    "chalk": "^4.1.2",
+    "cli-table3": "^0.6.5"
+  },
+  "devDependencies": {
+    "typescript": "^5.7.0",
+    "vitest": "^3.0.0",
+    "eslint": "^9.20.0",
+    "@types/node": "^22.0.0"
+  }
+}

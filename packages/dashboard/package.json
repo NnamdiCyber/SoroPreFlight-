@@ -1,0 +1,20 @@
+{
+  "name": "@soropreflight/dashboard",
+  "version": "0.1.0",
+  "private": true,
+  "description": "SoroPreFlight web dashboard — React",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "test": "vitest run",
+    "lint": "eslint src --ext .ts,.tsx",
+    "clean": "rm -rf dist .turbo"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "typescript": "^5.7.0",
+    "vitest": "^3.0.0",
+    "eslint": "^9.20.0"
+  }
+}
