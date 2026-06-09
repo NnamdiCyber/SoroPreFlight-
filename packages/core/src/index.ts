@@ -1,1 +1,3 @@
-export const name = '@soropreflight/core';
+export * from './types';
+export * from './constants';
+export * from './config';
