@@ -1,1 +1,50 @@
-export const name = '@soropreflight/sdk';
+export { SoroPreFlight } from './SoroPreFlight';
+export { runSimulation } from './simulate';
+export { runBatchSimulation } from './batch';
+export { runSuite } from './suite';
+export type {
+  SimulateOptions,
+  BatchSimulateOptions,
+  DeployOptions,
+  SuiteResult,
+  SuiteStepResult,
+  SoroPreFlightOptions,
+} from './types';
+
+export type {
+  Network,
+  CheckStatus,
+  Severity,
+  AIAnalysisLevel,
+  PreflightCheck,
+  CheckResult,
+  SimulationRequest,
+  ScVal,
+  SimulationResult,
+  SimulationError,
+  FeeEstimate,
+  AuthResult,
+  AIRequest,
+  AIResponse,
+  ErrorExplanation,
+  OptimizationAdvice,
+  ContractAudit,
+  Vulnerability,
+  DeployRequest,
+  DeployResult,
+  BatchSimulationRequest,
+  BatchResult,
+  SuiteDefinition,
+  SuiteSetup,
+  SuiteSimulation,
+  Workspace,
+  WorkspaceMember,
+  Role,
+  User,
+  RBACPolicy,
+  RBACPolicyEntry,
+  SimulationReport,
+  ReportMetadata,
+  NetworkConfig,
+  Config,
+} from './types';
