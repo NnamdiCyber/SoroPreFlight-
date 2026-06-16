@@ -1,0 +1,42 @@
+# Example consumer workflow for SoroPreFlight pre-flight checks
+# Copy this into your own project's .github/workflows/ directory
+name: Soroban Pre-flight Checks
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  preflight:
+    name: Pre-flight Simulation
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build project
+        run: npm run build
+
+      - name: Run pre-flight suite
+        run: npx soropreflight run --suite preflight/ci-suite.yaml
+        env:
+          SOROPREFLIGHT_NETWORK: testnet
+          SOROPREFLIGHT_RPC_URL: https://soroban-testnet.stellar.org
+
+      - name: Run with AI analysis (basic)
+        run: npx soropreflight run --suite preflight/ci-suite.yaml --analyze basic
+        env:
+          SOROPREFLIGHT_NETWORK: testnet
+          SOROPREFLIGHT_RPC_URL: https://soroban-testnet.stellar.org
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}

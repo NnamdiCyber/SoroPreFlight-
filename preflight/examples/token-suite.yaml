@@ -1,0 +1,77 @@
+# Example: Token Contract Simulation Suite
+# Demonstrates SoroPreFlight pre-flight checks for a Stellar Soroban token contract
+name: example-token-suite
+network: testnet
+
+setup:
+  deploy:
+    wasm: ./contracts/example-token/target/wasm32-unknown-unknown/release/example_token.wasm
+    source: GDS4N3XYQN3J7Z5XZ3J7Z5XZ3J7Z5XZ3J7Z5XZ3J7Z5XZ3J7Z5XZ3J7Z5
+    alias: token
+
+simulations:
+  - name: "Initialize token with admin, supply, name, symbol"
+    contract: "{{token}}"
+    function: initialize
+    args:
+      - type: address
+        value: GDS4N3XYQN3J7Z5XZ3J7Z5XZ3J7Z5XZ3J7Z5XZ3J7Z5XZ3J7Z5XZ3J7Z5
+      - type: i128
+        value: "10000000000"
+      - type: symbol
+        value: SORO
+      - type: symbol
+        value: SoroToken
+    expect:
+      status: SUCCESS
+
+  - name: "Check admin balance after init"
+    contract: "{{token}}"
+    function: balance
+    args:
+      - type: address
+        value: GDS4N3XYQN3J7Z5XZ3J7Z5XZ3J7Z5XZ3J7Z5XZ3J7Z5XZ3J7Z5XZ3J7Z5
+    expect:
+      status: SUCCESS
+
+  - name: "Transfer tokens between users"
+    contract: "{{token}}"
+    function: transfer
+    args:
+      - type: address
+        value: GDS4N3XYQN3J7Z5XZ3J7Z5XZ3J7Z5XZ3J7Z5XZ3J7Z5XZ3J7Z5XZ3J7Z5
+      - type: address
+        value: GC5R3J7Z5XZ3J7Z5XZ3J7Z5XZ3J7Z5XZ3J7Z5XZ3J7Z5XZ3J7Z5XZ3J7Z5
+      - type: i128
+        value: "1000"
+    expect:
+      status: SUCCESS
+      max_fee_xlm: 0.005
+
+  - name: "Mint new tokens"
+    contract: "{{token}}"
+    function: mint
+    args:
+      - type: address
+        value: GDS4N3XYQN3J7Z5XZ3J7Z5XZ3J7Z5XZ3J7Z5XZ3J7Z5XZ3J7Z5XZ3J7Z5
+      - type: i128
+        value: "5000000"
+    expect:
+      status: SUCCESS
+      checks:
+        FEE_SURPLUS: PASS
+        EXEC_BUDGET: PASS
+
+  - name: "Unauthorized transfer should fail"
+    contract: "{{token}}"
+    function: transfer
+    args:
+      - type: address
+        value: GA5R3J7Z5XZ3J7Z5XZ3J7Z5XZ3J7Z5XZ3J7Z5XZ3J7Z5XZ3J7Z5XZ3J7Z5
+      - type: address
+        value: GC5R3J7Z5XZ3J7Z5XZ3J7Z5XZ3J7Z5XZ3J7Z5XZ3J7Z5XZ3J7Z5XZ3J7Z5
+      - type: i128
+        value: "100"
+    expect:
+      status: FAIL
+      error_contains: unauthorized

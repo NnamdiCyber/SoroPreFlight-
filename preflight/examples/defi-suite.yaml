@@ -1,0 +1,86 @@
+# Example: DeFi Protocol Simulation Suite
+# Demonstrates pre-flight checks for a DeFi application (liquidity pool + swap)
+name: example-defi-suite
+network: testnet
+
+setup:
+  deploy:
+    wasm: ./contracts/liquidity-pool/target/wasm32-unknown-unknown/release/liquidity_pool.wasm
+    source: GDS4N3XYQN3J7Z5XZ3J7Z5XZ3J7Z5XZ3J7Z5XZ3J7Z5XZ3J7Z5XZ3J7Z5
+    alias: pool
+
+simulations:
+  - name: "Initialize liquidity pool"
+    contract: "{{pool}}"
+    function: initialize
+    args:
+      - type: address
+        value: GDS4N3XYQN3J7Z5XZ3J7Z5XZ3J7Z5XZ3J7Z5XZ3J7Z5XZ3J7Z5XZ3J7Z5
+      - type: address
+        value: CA3D5KRYM6CB7OWQ6TWYRR3Z4T7GNZLKERYNZGGA5SOAOPIFY6YQGAXE
+      - type: address
+        value: CB3D5KRYM6CB7OWQ6TWYRR3Z4T7GNZLKERYNZGGA5SOAOPIFY6YQGAXE
+    expect:
+      status: SUCCESS
+
+  - name: "Deposit liquidity"
+    contract: "{{pool}}"
+    function: deposit
+    args:
+      - type: address
+        value: GDS4N3XYQN3J7Z5XZ3J7Z5XZ3J7Z5XZ3J7Z5XZ3J7Z5XZ3J7Z5XZ3J7Z5
+      - type: i128
+        value: "1000000"
+      - type: i128
+        value: "500000"
+    expect:
+      status: SUCCESS
+      max_fee_xlm: 0.01
+
+  - name: "Swap tokens"
+    contract: "{{pool}}"
+    function: swap
+    args:
+      - type: address
+        value: GDS4N3XYQN3J7Z5XZ3J7Z5XZ3J7Z5XZ3J7Z5XZ3J7Z5XZ3J7Z5XZ3J7Z5
+      - type: address
+        value: CA3D5KRYM6CB7OWQ6TWYRR3Z4T7GNZLKERYNZGGA5SOAOPIFY6YQGAXE
+      - type: i128
+        value: "100000"
+      - type: i128
+        value: "95000"
+    expect:
+      status: SUCCESS
+      checks:
+        FEE_SURPLUS: PASS
+        EXEC_BUDGET: PASS
+        AUTH_SIGNERS: PASS
+
+  - name: "Swap with insufficient output (expect revert)"
+    contract: "{{pool}}"
+    function: swap
+    args:
+      - type: address
+        value: GDS4N3XYQN3J7Z5XZ3J7Z5XZ3J7Z5XZ3J7Z5XZ3J7Z5XZ3J7Z5XZ3J7Z5
+      - type: address
+        value: CA3D5KRYM6CB7OWQ6TWYRR3Z4T7GNZLKERYNZGGA5SOAOPIFY6YQGAXE
+      - type: i128
+        value: "100000"
+      - type: i128
+        value: "200000"
+    expect:
+      status: FAIL
+      error_contains: slippage
+
+  - name: "Withdraw liquidity"
+    contract: "{{pool}}"
+    function: withdraw
+    args:
+      - type: address
+        value: GDS4N3XYQN3J7Z5XZ3J7Z5XZ3J7Z5XZ3J7Z5XZ3J7Z5XZ3J7Z5XZ3J7Z5
+      - type: i128
+        value: "50000"
+      - type: i128
+        value: "25000"
+    expect:
+      status: SUCCESS

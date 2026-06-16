@@ -1,0 +1,61 @@
+name: token-ci-suite
+network: testnet
+
+setup:
+  deploy:
+    wasm: ./contracts/token.wasm
+    source: GDS4N3XYQN3J7Z5XZ3J7Z5XZ3J7Z5XZ3J7Z5XZ3J7Z5XZ3J7Z5XZ3J7Z5
+    alias: example-token
+
+simulations:
+  - name: "Token - initialize"
+    contract: "{{example-token}}"
+    function: initialize
+    args:
+      - type: address
+        value: GDS4N3XYQN3J7Z5XZ3J7Z5XZ3J7Z5XZ3J7Z5XZ3J7Z5XZ3J7Z5XZ3J7Z5
+      - type: i128
+        value: "1000000000"
+      - type: symbol
+        value: USDC
+      - type: symbol
+        value: USD Coin
+    expect:
+      status: SUCCESS
+
+  - name: "Token - transfer (authorized)"
+    contract: "{{example-token}}"
+    function: transfer
+    args:
+      - type: address
+        value: GDS4N3XYQN3J7Z5XZ3J7Z5XZ3J7Z5XZ3J7Z5XZ3J7Z5XZ3J7Z5XZ3J7Z5
+      - type: address
+        value: GC5R3J7Z5XZ3J7Z5XZ3J7Z5XZ3J7Z5XZ3J7Z5XZ3J7Z5XZ3J7Z5XZ3J7Z5
+      - type: i128
+        value: "500"
+    expect:
+      status: SUCCESS
+      max_fee_xlm: 0.01
+
+  - name: "Token - transfer (unauthorized, expect fail)"
+    contract: "{{example-token}}"
+    function: transfer
+    args:
+      - type: address
+        value: GB7Z5XZ3J7Z5XZ3J7Z5XZ3J7Z5XZ3J7Z5XZ3J7Z5XZ3J7Z5XZ3J7Z5XZ3J7
+      - type: address
+        value: GC5R3J7Z5XZ3J7Z5XZ3J7Z5XZ3J7Z5XZ3J7Z5XZ3J7Z5XZ3J7Z5XZ3J7Z5
+      - type: i128
+        value: "500"
+    expect:
+      status: FAIL
+      error_contains: unauthorized
+
+  - name: "Token - balance"
+    contract: "{{example-token}}"
+    function: balance
+    args:
+      - type: address
+        value: GDS4N3XYQN3J7Z5XZ3J7Z5XZ3J7Z5XZ3J7Z5XZ3J7Z5XZ3J7Z5XZ3J7Z5
+    expect:
+      status: SUCCESS

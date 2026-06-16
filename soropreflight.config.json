@@ -1,0 +1,23 @@
+{
+  "network": "testnet",
+  "rpcUrl": "https://soroban-testnet.stellar.org",
+  "ai": {
+    "enabled": true,
+    "model": "claude-sonnet-4-20250514",
+    "analysisLevel": "deep"
+  },
+  "simulation": {
+    "forkLedger": null,
+    "timeout": 30000,
+    "maxRetries": 3
+  },
+  "reporting": {
+    "format": ["json", "html"],
+    "outputDir": "./preflight-reports",
+    "webhookUrl": null
+  },
+  "enterprise": {
+    "workspaceId": null,
+    "auditLog": true
+  }
+}
