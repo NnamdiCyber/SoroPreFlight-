@@ -1,1 +1,2 @@
-export const name = '@soropreflight/api';
+export { buildServer, startServer } from './server';
+export type { ApiServerOptions } from './server';
