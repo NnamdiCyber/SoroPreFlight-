@@ -23,9 +23,9 @@ Thank you for your interest in contributing to SoroPreFlight! This guide will he
 
 ```bash
 # Clone the repository
-git clone https://github.com/your-org/soropreflight.git
+git clone https://github.com/soropreflight/soropreflight.git
 cd soropreflight
-
+```
 # Install all dependencies (uses npm workspaces)
 npm install
 

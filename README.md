@@ -174,15 +174,13 @@ yarn add @soropreflight/sdk
 
 # pnpm
 pnpm add @soropreflight/sdk
-```
-
 #### Self-hosted (Docker Compose)
 
 ```bash
-git clone https://github.com/your-org/soropreflight.git
+git clone https://github.com/soropreflight/soropreflight.git
 cd soropreflight
 cp .env.example .env
-# Edit .env with your credentials
+```# Edit .env with your credentials
 docker compose up -d
 ```
 
