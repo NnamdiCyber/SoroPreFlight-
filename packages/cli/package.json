@@ -12,7 +12,7 @@
   "scripts": {
     "build": "tsc",
     "test": "vitest run",
-    "lint": "eslint src --ext .ts",
+    "lint": "ESLINT_USE_FLAT_CONFIG=false eslint src --ext .ts",
     "clean": "rm -rf dist .turbo"
   },
   "dependencies": {

@@ -9,7 +9,7 @@
     "dev": "vite",
     "preview": "vite preview",
     "test": "vitest run",
-    "lint": "eslint src --ext .ts,.tsx",
+    "lint": "ESLINT_USE_FLAT_CONFIG=false eslint src --ext .ts,.tsx",
     "clean": "rm -rf dist .turbo"
   },
   "dependencies": {

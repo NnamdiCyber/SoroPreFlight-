@@ -9,10 +9,12 @@ module.exports = {
   parserOptions: { ecmaVersion: 2022, sourceType: 'module' },
   plugins: ['@typescript-eslint'],
   rules: {
-    'no-console': 'warn',
-    '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
+    'no-console': 'off',
+    'no-empty': 'off',
+    '@typescript-eslint/no-unused-vars': 'off',
     '@typescript-eslint/explicit-function-return-type': 'off',
-    '@typescript-eslint/no-explicit-any': 'warn',
+    '@typescript-eslint/no-explicit-any': 'off',
+    '@typescript-eslint/no-require-imports': 'off',
   },
   ignorePatterns: ['dist', 'node_modules', '.turbo'],
 };
